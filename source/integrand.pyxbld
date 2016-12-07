@@ -1,0 +1,6 @@
+# Suppress warnings when performing C compile of integrand.pyx
+def make_ext(modname, pyxfilename):
+    from distutils.extension import Extension
+    return Extension(name=modname,
+                     sources=[pyxfilename],
+                     extra_compile_args=['-w'])

@@ -8,6 +8,7 @@ import argparse
 import numpy as np
 import stationary_mcmc
 import stationary_vegas
+from common import signed_exact
 # Status bar library
 # sudo pip install tqdm
 from tqdm import tqdm
@@ -101,6 +102,10 @@ parser.add_argument("-r", help="Range for nu (default 0.05 6.0)",
 parser.add_argument("-n", help="Number of steps to take in nu (default 20)", 
     default=20, type=pos_int, dest="steps")
 
+# Include zero?
+parser.add_argument("-0", help="Do not include nu = 0 (default false)", action="store_false", 
+    dest="includezero", default=True)
+
 # Quiet mode? Verbose mode?
 noise_group = parser.add_mutually_exclusive_group()
 noise_group.add_argument("-q", help="Quiet mode", action="store_true", dest="quiet")
@@ -118,7 +123,11 @@ if not args.quiet : print __doc__
 # Figure out the nu samples
 numin, numax = args.nu_range
 nucount = args.steps
-nuvals = np.linspace(numin, numax, nucount)
+if args.includezero :
+    nuvals = np.concatenate([np.array([0.0]), np.linspace(numin, numax, nucount)])
+    nucount += 1
+else :
+    nuvals = np.linspace(numin, numax, nucount)
 
 # Print what we're computing
 if args.verbose :
@@ -130,6 +139,8 @@ if args.verbose :
     print "Method:   ", args.method
     print "Samples:  ", args.samples
     print "Scanning over nu from", numin, "to", numax, "in", nucount, "steps"
+    if args.includezero :
+        print "Including nu=0"
 
 # Set up for the calculation
 results = [[]] * nucount
@@ -142,7 +153,14 @@ elif args.method == "mcmc" :
 # Iterate over the range of nu
 for i in tqdm(range(nucount)):
     parameters[2] = nuvals[i]
-    results[i] = number_density(parameters, args.samples)
+    if parameters[2] == 0.0 :
+        # We need to treat nu=0 as a special case
+        exact = signed_exact(*parameters)
+        # result = integrals, errors, exact, acceptance
+        results[i] = [exact, 0.0, 0.0, 0.0, exact], [0.0, 0.0, 0.0, 0.0, 0.0], exact, 0.0
+
+    else :
+        results[i] = number_density(parameters, args.samples)
 
 # Write results to file
 output = args.file

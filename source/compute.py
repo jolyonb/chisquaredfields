@@ -103,7 +103,7 @@ parser.add_argument("-n", help="Number of steps to take in nu (default 20)",
     default=20, type=pos_int, dest="steps")
 
 # Include zero?
-parser.add_argument("-0", help="Do not include nu = 0 (default false)", action="store_false", 
+parser.add_argument("-0", help="Do not include nu=0 (default includes nu=0)", action="store_false", 
     dest="includezero", default=True)
 
 # Quiet mode? Verbose mode?

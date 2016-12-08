@@ -85,70 +85,108 @@ errors *= args.errscale
 def plot_signed(integrals, errors, nuvals, nuvalsexact, exactvals) :
     """Plot the signed number density, along with the exact solution"""
 
+    # Global marker size msize
+    msize = 4
+
     # Plot the data with errorbars and the exact solution
     fig, ax = plt.subplots()
-    plt.rc('text', usetex=True)
-    plt.rc('font', family='serif')
-    ax.errorbar(nuvals, integrals[4], yerr=errors[4], fmt='ro')
-    ax.plot(nuvalsexact, exactvals, 'b-')
+    ax.errorbar(nuvals, integrals[4], yerr=errors[4], fmt='ro', markersize=msize, label="Numeric")
+    ax.plot(nuvalsexact, exactvals, 'b-', label="Analytic")
 
-    ax.set_xlabel(r'$\bar{\nu}$',fontsize=16)
-    ax.set_ylabel(r'$\displaystyle\left\langle \frac{d{\cal N}^{\mathrm{signed}}}{d\bar{\nu}} \right\rangle$',fontsize=16)
+    # Labels
     ax.set_title(r'Signed Number Density', fontsize=20)
+    ax.set_xlabel(r'$\bar{\nu}$',fontsize=20)
+    ax.set_ylabel(r'$\left\langle \frac{d{\cal N}^\mathrm{signed}}{d\bar{\nu}} \right\rangle$',fontsize=24,labelpad=-8)
     fig.subplots_adjust(left=0.16)
 
-    # these are matplotlib.patch.Patch properties
-    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+    # Legend
+    h1, l1 = ax.get_legend_handles_labels()
+    legend = ax.legend(h1,l1,loc='upper right',shadow=False,fancybox=True)
 
-    samplenum = "{:.0e}".format(numsamples)
-    samplenum = samplenum.replace("e+0", "\\times 10^{") + "}"
-    strings = [r'$N=' + str(int(N)) + '$',
-               r'$\gamma=%.2f$'%(gamma),
-               r'$\sigma_0=' + str(sigma0) + '$',
-               r'$\sigma_1=' + str(sigma1) + '$',
-               r'$' + samplenum + '\ \mathrm{Samples}$'
-    ]
+    # The frame is matplotlib.patches.Rectangle instance surrounding the legend.
+    frame = legend.get_frame()
+    frame.set_facecolor('1.0')
 
-    # place a text box in upper left in axes coords
-    ax.text(0.75, 0.95, "\n".join(strings), transform=ax.transAxes, fontsize=14, verticalalignment='top', bbox=props)
+    # Set sizes for the legend
+    for label in legend.get_texts():
+        label.set_fontsize(14)
+    for label in legend.get_lines():
+        label.set_linewidth(1.5)  # the legend line width
+
+    # Tick marks
+    ax.tick_params(axis='x', which='major', labelsize=16)
+    ax.tick_params(axis='y', which='major', labelsize=16)
+
+    # Text box of parameters
+    textlist=[
+    r'$\sigma_0=%.2f$'%(sigma0)+'\n',
+    r'$\sigma_1=%.2f$'%(sigma1)+'\n',
+    r'$\gamma \,\, =  %.2f$'%(gamma)+'\n',
+    r'$N\, = %1d$'%(N)]
+    textstr=''.join(textlist)
+    props = dict(boxstyle='round', facecolor='white', edgecolor='black')
+    ax.text(0.8, 0.8, textstr, transform=ax.transAxes, fontsize=16,
+        verticalalignment='top', bbox=props)
 
 def plot_all(integrals, errors, nuvals, curves, nuvalsexact, extrema_vals, saddle_vals, lowgamma) :
     """Plot the individual number densities"""
 
+    # A pretty purple!
+    prettypurple = "#DE00FF"
+    # Global marker size msize
+    msize = 4
+
     # Plot the data with errorbars and the exact solution
     fig, ax = plt.subplots()
-    plt.rc('text', usetex=True)
-    plt.rc('font', family='serif')
-    if curves[0] : ax.errorbar(nuvals, integrals[0], yerr=errors[0], fmt='ro-', label="Minima")
-    if curves[1] : ax.errorbar(nuvals, integrals[1], yerr=errors[1], fmt='bo-', label="Saddle (+,+,--)")
-    if curves[2] : ax.errorbar(nuvals, integrals[2], yerr=errors[2], fmt='go-', label="Saddle (+,--,--)")
-    if curves[3] : ax.errorbar(nuvals, integrals[3], yerr=errors[3], fmt='ko-', label="Maxima")
+    # plt.rc('text', usetex=True)
+    # plt.rc('font', family='sans-serif')
+    if curves[0] : ax.errorbar(nuvals, integrals[0], yerr=errors[0], markersize=msize, fmt='ro-', label="Minima")
+    if curves[1] : ax.errorbar(nuvals, integrals[1], yerr=errors[1], markersize=msize, fmt='bo-', label="Saddle (+,+,--)")
+    if curves[2] : ax.errorbar(nuvals, integrals[2], yerr=errors[2], markersize=msize, fmt='go-', label="Saddle (+,--,--)")
+    if curves[3] : ax.errorbar(nuvals, integrals[3], yerr=errors[3], markersize=msize, color=prettypurple, fmt='o-', label="Maxima")
 
-	# Plotting low gamma approximations
+    # Plotting low gamma approximations
     if lowgamma and (curves[3] or curves[0]) : ax.plot(nuvalsexact, extrema_vals, 'r-')
     if lowgamma and (curves[2] or curves[1]) : ax.plot(nuvalsexact, saddle_vals, 'b-')
 
-    ax.legend()
-
-    ax.set_xlabel(r'$\bar{\nu}$',fontsize=16)
-    ax.set_ylabel(r'$\displaystyle\left\langle \frac{d{\cal N}}{d\bar{\nu}} \right\rangle$',fontsize=16)
+    # Labels
     ax.set_title(r'Number Density of Stationary Points', fontsize=20)
+    ax.set_xlabel(r'$\bar{\nu}$',fontsize=20)
+    ax.set_ylabel(r'$\left\langle \frac{d{\cal N}^\mathrm{stationary}}{d\bar{\nu}} \right\rangle$',fontsize=24,labelpad=-8)
     fig.subplots_adjust(left=0.16)
 
-    # these are matplotlib.patch.Patch properties
-    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+    # Legend
+    h1, l1 = ax.get_legend_handles_labels()
+    legend = ax.legend(h1,l1,loc='upper right',shadow=False,fancybox=True)
 
-    samplenum = "{:.0e}".format(numsamples)
-    samplenum = samplenum.replace("e+0", "\\times 10^{") + "}"
-    strings = [r'$N=' + str(int(N)) + '$',
-               r'$\gamma=%.2f$'%(gamma),
-               r'$\sigma_0=' + str(sigma0) + '$',
-               r'$\sigma_1=' + str(sigma1) + '$',
-               r'$' + samplenum + '\ \mathrm{Samples}$'
-    ]
+    # The frame is matplotlib.patches.Rectangle instance surrounding the legend.
+    frame = legend.get_frame()
+    frame.set_facecolor('1.0')
 
-    # place a text box in upper left in axes coords
-    ax.text(0.05, 0.95, "\n".join(strings), transform=ax.transAxes, fontsize=14, verticalalignment='top', bbox=props)
+    # Set sizes for the legend
+    for label in legend.get_texts():
+        label.set_fontsize(14)
+    for label in legend.get_lines():
+        label.set_linewidth(1.5)  # the legend line width
+
+    # Tick marks
+    ax.tick_params(axis='x', which='major', labelsize=16)
+    ax.tick_params(axis='y', which='major', labelsize=16)
+
+    # Text box of parameters
+    textlist=[
+    r'$\sigma_0=%.2f$'%(sigma0)+'\n',
+    r'$\sigma_1=%.2f$'%(sigma1)+'\n',
+    r'$\gamma \,\, =  %.2f$'%(gamma)+'\n',
+    r'$N\, = %1d$'%(N)]
+    textstr=''.join(textlist)
+    props = dict(boxstyle='round', facecolor='white', edgecolor='black')
+    ax.text(0.8, 0.65, textstr, transform=ax.transAxes, fontsize=16,
+        verticalalignment='top', bbox=props)
+
+# Set some plotting parameters
+plt.rc('text', usetex=True)
+plt.rc('font', family='sans-serif')
 
 if args.signed :
     # Compute the exact solution for the signed number density
@@ -160,7 +198,7 @@ if args.signed :
 
 if args.individual :
     if args.lowgamma :
-    	#Calculating the low gamma approximation for saddles and extrema.
+        #Calculating the low gamma approximation for saddles and extrema.
         extrema_vals = np.zeros(nucount)
         saddle_vals = np.zeros(nucount)
         for i, nuval in enumerate(nuvalsexact) :

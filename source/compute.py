@@ -1,7 +1,7 @@
 #! /usr/bin/python
 """Number Density of Stationary Points for Chi-Squared Fields
 v1.0 by Jolyon Bloomfield and Zander Moss, December 2016
-See arXiv:1612.????? for details
+See arXiv:1612.03890 for details
 Computational Module"""
 
 import argparse

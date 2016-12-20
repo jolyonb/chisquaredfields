@@ -3,7 +3,7 @@ Number Density of Stationary Points for Chi-Squared Fields
 
 v1.0 by Jolyon Bloomfield and Zander Moss, December 2016
 
-This python code computes the number density of stationary points for chi-squared fields. See arXiv:1612.????? for details.
+This python code computes the number density of stationary points for chi-squared fields. See arXiv:1612.03890 (https://arxiv.org/abs/1612.03890) for details.
 
 This code requires the following python libraries to be installed:
 * vegas

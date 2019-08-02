@@ -1,7 +1,8 @@
 #! /usr/bin/python
 
 import numpy as np
-import pyximport; pyximport.install(setup_args={'include_dirs': np.get_include()})
+import pyximport
+pyximport.install(setup_args={'include_dirs': np.get_include()})
 import vegas
 import integrand as INT
 import time
@@ -43,26 +44,26 @@ if __name__ == "__main__":
 	parameters = [4, 0.8, 1.0, 1.0, 1.0]
 	numsamples = 1e5
 
-	print "*" * 60
-	print "Performing test run"
-	print "Computing number densities with", int(numsamples), "samples..."
-	print "N       = ", parameters[0]
-	print "nu      = ", parameters[2]
-	print "gamma   = ", parameters[1]
-	print "sigma_0 = ", parameters[3]
-	print "sigma_1 = ", parameters[4]
+	print("*" * 60)
+	print("Performing test run")
+	print("Computing number densities with", int(numsamples), "samples...")
+	print("N       = ", parameters[0])
+	print("nu      = ", parameters[2])
+	print("gamma   = ", parameters[1])
+	print("sigma_0 = ", parameters[3])
+	print("sigma_1 = ", parameters[4])
 
 	start = time.time()
 	integrals, errors, exact, acceptance = number_density(parameters, numsamples)
 	end = time.time()
 
-	print "Finished in", round(end - start, 4), "s"
+	print("Finished in", round(end - start, 4), "s")
 
-	print "Minima:	  ", integrals[0], "+-", errors[0]
-	print "Saddle (++-):", integrals[1], "+-", errors[1]
-	print "Saddle (+--):", integrals[2], "+-", errors[2]
-	print "Maxima:	  ", integrals[3], "+-", errors[3]
-	print "Signed:      ", integrals[4], "+-", errors[4]
-	print "Signed exact:", exact
-	print "Signed error:", abs(integrals[4] - exact)
+	print("Minima:	  ", integrals[0], "+-", errors[0])
+	print("Saddle (++-):", integrals[1], "+-", errors[1])
+	print("Saddle (+--):", integrals[2], "+-", errors[2])
+	print("Maxima:	  ", integrals[3], "+-", errors[3])
+	print("Signed:      ", integrals[4], "+-", errors[4])
+	print("Signed exact:", exact)
+	print("Signed error:", abs(integrals[4] - exact))
 

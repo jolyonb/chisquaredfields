@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/env python3
 """Number Density of Stationary Points for Chi-Squared Fields
 v1.0 by Jolyon Bloomfield and Zander Moss, December 2016
 See arXiv:1612.03890 for details
@@ -114,7 +114,7 @@ noise_group.add_argument("-V", help="Verbose mode", action="store_true", dest="v
 # Parse the command line
 args = parser.parse_args()
 # Print the header
-if not args.quiet : print __doc__
+if not args.quiet : print(__doc__)
 
 #
 # Computations start here
@@ -131,16 +131,16 @@ else :
 
 # Print what we're computing
 if args.verbose :
-    print "Outputting to", args.file.name
-    print "Fields N: ", args.N
-    print "gamma:    ", args.gamma
-    print "sigma_0:  ", args.sigma0
-    print "sigma_1:  ", args.sigma1
-    print "Method:   ", args.method
-    print "Samples:  ", args.samples
-    print "Scanning over nu from", numin, "to", numax, "in", nucount, "steps"
+    print("Outputting to", args.file.name)
+    print("Fields N: ", args.N)
+    print("gamma:    ", args.gamma)
+    print("sigma_0:  ", args.sigma0)
+    print("sigma_1:  ", args.sigma1)
+    print("Method:   ", args.method)
+    print("Samples:  ", args.samples)
+    print("Scanning over nu from", numin, "to", numax, "in", nucount, "steps")
     if args.includezero :
-        print "Including nu=0"
+        print("Including nu=0")
 
 # Set up for the calculation
 results = [[]] * nucount

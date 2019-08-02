@@ -95,4 +95,4 @@ def init_values(variables, values, probability, parameters) :
     return probability(values, parameters)
 
 if __name__ == "__main__":
-    print "This is a supporting library. It is not intended to be executed."
+    print("This is a supporting library. It is not intended to be executed.")

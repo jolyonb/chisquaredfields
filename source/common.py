@@ -44,4 +44,4 @@ def gamma3(x) :
     return pi**1.5 * Gamma(x) * Gamma(x - 0.5) * Gamma(x - 1.0)
 
 if __name__ == "__main__":
-    print "This is a supporting library. It is not intended to be executed."
+    print ("This is a supporting library. It is not intended to be executed.")
